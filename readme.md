@@ -219,7 +219,7 @@ This model enhances the project by allowing generation of descriptive titles fro
 
 ### Episode Embeddings Visualization and Recommendations
 
-![Episode Embeddings Visualization](screenshot.png)
+![Episode Embeddings Visualization](./images/screenshot.png)
 
 This screenshot shows the main interface of our application:
 
@@ -235,7 +235,7 @@ This visualization allows users to intuitively explore the relationships between
 
 ### Model Training Results
 
-![Loss History](loss_history.png)
+![Loss History](./images/loss_history.png)
 
 This graph shows the training progress of our embedding-to-sentence model:
 
