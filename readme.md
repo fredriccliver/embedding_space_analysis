@@ -1,6 +1,8 @@
 # Episode Embedding Visualizer and Recommender
 
-This project visualizes episode embeddings in a 3D space using Principal Component Analysis (PCA) and provides episode recommendations based on user interactions.
+[![Project Demo Video](https://img.youtube.com/vi/EeHtoc0gvHY/0.jpg)](https://youtu.be/EeHtoc0gvHY)
+
+This project visualizes episode embeddings in a 3D space using Principal Component Analysis (PCA) and provides episode recommendations based on user interactions. Click the image above to watch a demo of the project.
 
 ## Table of Contents
 
