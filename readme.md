@@ -10,8 +10,11 @@ This project visualizes episode embeddings in a 3D space using Principal Compone
 - [Usage](#usage)
 - [Features](#features)
 - [Core Functionality](#core-functionality)
-- [Visualization and Results](#visualization-and-results)
-- [Embedding to Sentence Model](#embedding-to-sentence-model)
+- [Recommendation Logic](#recommendation-logic)
+- [User Interaction](#user-interaction)
+- [Data Requirements](#data-requirements)
+- [Performance Advice](#performance-advice)
+- [Embedding to Title Models](#embedding-to-title-models)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -72,9 +75,10 @@ Key components:
 
 ## Recommendation Logic
 
-The recommendation system in this project uses two main approaches:
+The recommendation system uses two main approaches:
 
-### 1. Similarity-Based Recommendations
+1. Similarity-Based Recommendations
+2. Cluster-Based Recommendations (when 3 or more episodes are selected)
 
 This method recommends episodes based on their similarity to a given episode or set of episodes.
 
@@ -180,46 +184,60 @@ When integrating this recommendation system into a mobile application, consider 
 
 By applying these optimizations, you can ensure that the recommendation system runs efficiently on mobile devices, providing a smooth user experience while managing computational resources effectively.
 
-## Contributing
+## Embedding to Title Models
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+The project includes two different approaches for generating titles from episode embeddings:
 
-## License
+1. BART-based model (`train_e2t_bart_0.1.py`)
+2. Custom Transformer Decoder model (`train_EmbeddingToTitleModel.py`)
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+### BART-based Model
 
-## Embedding to Sentence Model
+This model uses a pre-trained BART model with a custom embedding projector. Key features include:
 
-The project includes a script `train_embedding_to_sentence_model.py` that trains a model to generate titles from episode embeddings. Here's a brief overview:
+- Uses `BartForConditionalGeneration` from Hugging Face Transformers
+- Custom `EmbeddingTitleDataset` for handling embeddings and titles
+- Implements an embedding projector to handle 1536-dimensional embeddings
+- Uses AdamW optimizer and ReduceLROnPlateau scheduler
 
-### Functionality
 
-- Loads episode data from `episodes.json`
-- Defines a custom dataset (`TitleDataset`) for handling embeddings and titles
-- Implements a custom `CustomEncoderDecoder` model based on BERT
-- Provides functions for training the model and generating titles from embeddings
+### Custom Transformer Decoder Model
 
-### Key Components
+This model implements a custom transformer decoder architecture. Key features include:
 
-- Uses `EncoderDecoderModel` from Hugging Face Transformers
-- Implements a custom embedding projector to handle 1536-dimensional embeddings
-- Includes a `generate_title` function for inference
+- Custom `EmbeddingToTitleModel` class
+- Uses GPT-2 tokenizer
+- Implements a custom embedding projector and transformer decoder
+- Uses temperature sampling for diverse title generation
 
-### Usage
 
-To train the model:
+Both models can be trained and used to generate titles from episode embeddings, enhancing the project's capabilities for content summarization and recommendation explanations.
 
-```bash
-python train_embedding_to_sentence_model.py
-```
+## Handling Large Model Files
 
-The trained model is saved as `embedding_to_sentence_model.pth`. Once trained, you can use the model to generate titles from embeddings.
+This project uses trained model weights that are stored in `.pth` files. These files are typically too large to be committed directly to the Git repository. Instead, we recommend the following approach:
 
-This model enhances the project by allowing generation of descriptive titles from episode embeddings, which can be useful for content summarization or recommendation explanations.
+1. Store large model files externally (e.g., on a file hosting service or a dedicated model registry).
+
+2. Provide instructions in this README on how to download and place these files in the correct location before running the application.
+
+3. Use a `.gitignore` file to prevent accidental commits of large files.
+
+For the `models/e2t_bart_0.1.pth` file:
+
+1. Download the file from [insert link to download location].
+2. Place the downloaded file in the `models/` directory of the project.
+3. Ensure the file is named `e2t_bart_0.1.pth`.
+
+Note: The `*.pth` pattern has been added to the `.gitignore` file to prevent these large files from being committed to the repository.
+
+## Model Weights
+
+- `models/e2t_bart_0.1.pth`: This file contains the weights for the BART-based Embedding-to-Title model. Due to its large size, it's not included in the repository. Please follow the instructions above to obtain this file before running the related scripts.
 
 ## Visualization and Results
 
-### Episode Embeddings Visualization and Recommendations
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ![Episode Embeddings Visualization](./images/screenshot.png)
 
@@ -235,14 +253,8 @@ This screenshot shows the main interface of our application:
 
 This visualization allows users to intuitively explore the relationships between different episodes and receive personalized recommendations.
 
-### Model Training Results
 
-![Loss History](./images/loss_history.png)
+----
 
-This graph shows the training progress of our embedding-to-sentence model:
 
-- The left plot displays the average loss per epoch, showing a steady decrease over time.
-- The right plot shows the loss per batch, providing a more detailed view of the training process.
-- Both graphs indicate that the model successfully learned to generate titles from embeddings, with the loss converging to a low value.
 
-These results demonstrate the effectiveness of our training process and the model's ability to capture the relationship between episode embeddings and their titles.

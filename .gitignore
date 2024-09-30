@@ -1,0 +1,20 @@
+# Virtual environment
+bge_env/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+
+# Distribution / packaging
+*.egg-info/
+dist/
+build/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Environment variables
+.env
+
+# Large model files
+*.pth
