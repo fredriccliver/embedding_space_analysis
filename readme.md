@@ -213,6 +213,45 @@ This model implements a custom transformer decoder architecture. Key features in
 
 Both models can be trained and used to generate titles from episode embeddings, enhancing the project's capabilities for content summarization and recommendation explanations.
 
+### Evaluation Summary
+
+We conducted experiments with two different approaches for generating titles from episode embeddings:
+
+1. BART-based model (`train_e2t_bart_0.1.py`)
+2. Custom Transformer Decoder model (`train_e2t_transformer.py`)
+
+#### BART-based Model Results
+
+The BART-based model showed some coherence in generating sentences, but the content was often unrelated to the actual titles. Here are some sample results:
+
+- Actual: "The best of Paris Fashion Week: Menswear Spring/Summer 2025"
+  Generated: "This is the second time in three years that a woman has been arrested. The first time was in 2009."
+
+- Actual: "Sir David Attenborough: New portrait by Jonathan Yeo unveiled"
+  Generated: "As for the rest of us, well, let's just say that we're not sure what happened. We're just going to have to wait and see what happens."
+
+#### Custom Transformer Decoder Model Results
+
+The custom Transformer Decoder model struggled with coherence and relevance, often repeating words or generating nonsensical content. Here are some sample results:
+
+- Actual: "The best of Paris Fashion Week: Menswear Spring/Summer 2025"
+  Generated: "FlightTrC tells New New New New Newations firing"
+
+- Actual: "Sir David Attenborough: New portrait by Jonathan Yeo unveiled"
+  Generated: "expertFrank Korea Korea Korea Korea Korea Korea Korea Korea Korea Korea Korea Korea Korea"
+
+#### Conclusion
+
+Both models currently face challenges in generating relevant and coherent titles from embeddings. The BART-based model produces more grammatically correct sentences but lacks relevance to the original titles. The custom Transformer Decoder model struggles with both coherence and relevance.
+
+Further improvements could include:
+1. Fine-tuning on a larger, more diverse dataset
+2. Experimenting with different model architectures or pre-trained models
+3. Implementing more sophisticated decoding strategies
+4. Exploring techniques to better preserve semantic information from embeddings to generated text
+
+These experiments highlight the complexity of reversing the embedding process to generate meaningful titles. While the current results are not satisfactory for production use, they provide a baseline for future improvements in this challenging task.
+
 ## Handling Large Model Files
 
 This project uses trained model weights that are stored in `.pth` files. These files are typically too large to be committed directly to the Git repository. Instead, we recommend the following approach:
