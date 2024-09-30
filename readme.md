@@ -218,7 +218,7 @@ Both models can be trained and used to generate titles from episode embeddings, 
 We conducted experiments with two different approaches for generating titles from episode embeddings:
 
 1. BART-based model (`train_e2t_bart_0.1.py`)
-2. Custom Transformer Decoder model (`train_e2t_transformer.py`)
+2. Custom Transformer Decoder model (`train_e2t_gpt2.py`)
 
 #### BART-based Model Results
 
@@ -230,15 +230,28 @@ The BART-based model showed some coherence in generating sentences, but the cont
 - Actual: "Sir David Attenborough: New portrait by Jonathan Yeo unveiled"
   Generated: "As for the rest of us, well, let's just say that we're not sure what happened. We're just going to have to wait and see what happens."
 
-#### Custom Transformer Decoder Model Results
+#### Custom Transformer Decoder Model Results 
 
 The custom Transformer Decoder model struggled with coherence and relevance, often repeating words or generating nonsensical content. Here are some sample results:
 
+##### 0.1 version
 - Actual: "The best of Paris Fashion Week: Menswear Spring/Summer 2025"
   Generated: "FlightTrC tells New New New New Newations firing"
 
 - Actual: "Sir David Attenborough: New portrait by Jonathan Yeo unveiled"
   Generated: "expertFrank Korea Korea Korea Korea Korea Korea Korea Korea Korea Korea Korea Korea Korea"
+
+##### 0.2 version
+
+![0.2 version](./images/e2t_gpt2_0.2_loss_graph.png)
+
+- Actual title: 10 of the best TV shows of 2024 so far
+  Generated title:  firing seniorelelelelelelel Serbialyn Apps Apps AppsOD Paper villageausSenior�������������������������������
+
+- Actual title: A chicken recipe so good its origin is being fought in court
+  Generated title:  OUT work ConsciousMacMac hope Min Through exitun pulled111111111111111111111111111111111itement Seed 80nessnessness
+
+
 
 #### Conclusion
 
