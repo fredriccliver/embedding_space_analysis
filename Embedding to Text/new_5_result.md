@@ -1,6 +1,71 @@
-# Comparison of Actual vs. Generated summarys
+# Comparison of Actual vs. Generated summarys and Reconstruction of Generated Summarys
 
-Reconstruction prompt template:
+
+In this experiment, a Transformer-based Generative Adversarial Network (GAN) was implemented to generate podcast episode titles from summary embeddings.
+
+**Data and Preprocessing:**
+
+- **Dataset:** 500 English summaries with their corresponding embeddings, loaded from `episodes_english_500.json`.
+- **Embedding Dimension:** 1536, presumably obtained from a pre-trained language model (e.g., OpenAI's text embeddings).
+- **Tokenizer:** GPT-2 tokenizer with an added `[PAD]` token to handle padding.
+- **Maximum Sequence Length:** Set to 50 tokens for both input and output sequences.
+
+**Model Architecture:**
+
+- **Generator (`TransformerGenerator`):**
+  - **Input:** Summary embeddings.
+  - **Output:** Generated titles as sequences of token IDs.
+  - **Structure:**
+    - Embedding projection layer to map embeddings to the hidden dimension.
+    - Positional encoding to retain sequence order information.
+    - Transformer Decoder with 4 layers and 8 attention heads.
+    - Linear layer to project decoder outputs to vocabulary size.
+  - **Training Mechanism:**
+    - Uses teacher forcing with a ratio of 0.5.
+    - Generates titles either autoregressively or by using the actual titles shifted by one token.
+
+- **Discriminator (`TransformerDiscriminator`):**
+  - **Input:** Real or generated titles (as token IDs or logits).
+  - **Output:** Probability of the input being real or fake.
+  - **Structure:**
+    - Token embedding layer matching the generator's output dimension.
+    - Positional encoding for the input sequence.
+    - Transformer Encoder with 4 layers and 8 attention heads.
+    - Fully connected layers culminating in a sigmoid activation for binary classification.
+
+**Training Details:**
+
+- **Batch Size:** 16.
+- **Number of Epochs:** 30.
+- **Total Training Samples:** 480 (calculated as 16 batches × 30 epochs), though the dataset contains 500 samples.
+- **Loss Functions:**
+  - **Generator Loss (`g_loss`):** Combination of adversarial loss (`g_loss_adv`) and title generation loss (`g_loss_title`). The adversarial loss encourages the generator to produce titles that the discriminator classifies as real, while the title loss ensures the generated titles are similar to the actual ones.
+  - **Discriminator Loss (`d_loss`):** Sum of the losses on real titles (`d_loss_real`) and fake titles (`d_loss_fake`), computed using Binary Cross-Entropy Loss.
+- **Optimizers:**
+  - **Generator Optimizer:** Adam with a learning rate of 0.0005 and betas (0.5, 0.999).
+  - **Discriminator Optimizer:** Adam with a learning rate of 0.00025 and betas (0.5, 0.999).
+- **Training Strategy:**
+  - Early stopping implemented with a patience of 10 epochs based on the generator loss.
+  - The best model is saved when an improvement in generator loss is observed.
+  - At each epoch, sample titles are generated for evaluation.
+
+**Results and Observations:**
+
+- **Loss Progression:**
+  - The discriminator and generator losses fluctuated throughout training, reflecting the adversarial nature of GANs.
+  - Initially, the generator loss decreased, indicating learning progress, but later epochs showed instability and potential overfitting.
+
+- **Generated Titles:**
+  - Early epochs produced incoherent and irrelevant titles.
+  - As training progressed, the generated titles became slightly more coherent but still contained nonsensical phrases and grammatical errors.
+  - The generator struggled to produce titles that closely matched the actual summaries.
+
+
+## Reconstruction of Generated Titles:
+
+To enhance the coherence and meaningfulness of the generated summaries, a reconstruction process was introduced using the Claude 3.5 Sonnet language model. The primary reason for employing this new reconstruction method was to transform the often incoherent and nonsensical generated summaries into well-structured and sensible texts that more closely align with the original summaries.
+
+### Reconstruction prompt template:
 ```
 {original text}
 
@@ -8,9 +73,13 @@ reconstruct this broken text and make it sense with your imagination.
 the original text is a podcast episode summary.
 Print only summary without any explanations
 ```
-used model: claude 3.5 sonnet
+> used model: claude 3.5 sonnet
 
-# Testing
+The final results were quite impressive. The reconstructed summaries showed a significant improvement in clarity and relevance compared to the initial generated summaries. Despite starting from disjointed and sometimes nonsensical text, Claude 3.5 Sonnet was able to produce summaries that captured the essence of the original content. This demonstrates the model's ability to interpret and enhance flawed inputs, making the reconstructed summaries much more coherent and useful.
+
+
+# Testset result
+> [481:500]: not used in training
 
 ## Sample 481:
 Actual summary: 
