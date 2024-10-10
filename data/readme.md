@@ -4,9 +4,10 @@ This directory contains the dataset used for the Episode Embedding Visualization
 
 ## File Structure
 
-- `episodes.json`: The main dataset file containing episode information and embeddings.
+- `episodes.json`: title, summary_embedding
+- `episodes_english_embedding.json`: episode id, summary, summary_embedding. and english only. 500 data points
 
-## Data Format
+## Reference
+embedding model: text-embedding-3-small (openai), 1536 dimension
 
-The `episodes.json` file is a JSON array where each object represents an episode with the following structure:
 

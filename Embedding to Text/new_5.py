@@ -210,7 +210,7 @@ class EmbeddingTitleDataset(Dataset):
         }
 
 # Load data
-data_path = './episodes_english_500.json'  # Adjust the path as needed
+data_path = '../data/episodes_english_500.json'  # Adjust the path as needed
 if not os.path.exists(data_path):
     print(f"Data file not found at {data_path}")
     # Handle the missing file as appropriate
